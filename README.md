@@ -1,4 +1,4 @@
-#Discounter
+# Discounter
 
 Exercise project writen in Spring Boot, which exposes an API such that given a bill, it finds the net discount.
 
@@ -11,6 +11,7 @@ Requirements:
 6. A user can get only one of the percentage based discounts on a bill.
 
 The solution exposes one rest end point - post method, which accepts the following structure for payment information:
+```
 {
 	"userInfo": {
 		"type": enumeration,
@@ -20,39 +21,42 @@ The solution exposes one rest end point - post method, which accepts the followi
 	"otherData": object,
 	"containsGroceries": boolean
 }
+```
+- The `amount` property is the total bill.
 
-- The "amount" property is the total bill.
+- The `userInfo` property can be extended to keep more data, but its key data is the `type` property, which can be the following enumerations [`EMPLOYEE`, `AFFILIATE`, `LOYAL`, `REGULAR`]. If this property is not specified it is assigned as `REGULAR`.
+    The `EMPLOYEE` enum describes a user that is an employee of the store.
+    The `AFFILIATE` enum describes a user that is affiliate of the store.
+    The `LOYAL` enum describes a user that has been a customer for over 2 years.
+    The `REGULAR` enum describes a user type, to which the percentage discount does not applies.
 
-- The "userInfo" property can be extended to keep more data, but its key data is the "type" property, which can be the following enumerations ["EMPLOYEE", "AFFILIATE", "LOYAL", "REGULAR"]. If this property is not specified it is assigned as "REGULAR".
-    The "EMPLOYEE" enum describes a user that is an employee of the store.
-    The "AFFILIATE" enum describes a user that is affiliate of the store.
-    The "LOYAL" enum describes a user that has been a customer for over 2 years.
-    The "REGULAR" enum describes a user type, to which the percentage discount does not applies.
-
-- The "containsGroceries" tells whether the purchased stocks include groceries.
+- The `containsGroceries` tells whether the purchased stocks include groceries.
 
 The returned response has the following structure:
+```
 {
     "discount": number,
     "totalBill": number,
     "type": enumeration
 }
+```
 
-The "discount" property is the total amount of the discount, the "totalBill" is the initial bill and the type corresponds to the discount type applied.
+The `discount` property is the total amount of the discount, the `totalBill` is the initial bill and the type corresponds to the discount type applied.
 There are 4 options:
 
-    EMPLOYEE_DISCOUNT - discount for employees;
+    `EMPLOYEE_DISCOUNT` - discount for employees;
 
-    AFFILIATE_DISCOUNT - discount for affiliate user;
+    `AFFILIATE_DISCOUNT` - discount for affiliate user;
 
-    LOYALTY_DISCOUNT - discount for user that has been customer for more that 2 years;
+    `LOYALTY_DISCOUNT` - discount for user that has been customer for more that 2 years;
 
-    NONE - no discount is applied.
+    `NONE` - no discount is applied.
 
 To every payment an additional "voucher based" is applied, which corresponds to point 4. of the requirements.
 
 Example request and response:
     - Request:
+    ```
     {
         "userInfo": {
             "type": "AFFILIATE",
@@ -62,12 +66,15 @@ Example request and response:
         "otherData": "request example",
         "containsGroceries": false
     }
+    ```
     - Response:
+    ```
     {
         "discount": 47.344,
         "totalBill": 323.44,
         "type": "AFFILIATE_DISCOUNT"
     }
+    ```
 
 
 
