@@ -11,7 +11,7 @@ public class PaymentInfo {
     // Info can be some other type of data
     private UserInfo<String> userInfo;
 
-    private double amount;
+    private Double amount;
 
     private Object otherData;
 
@@ -27,11 +27,11 @@ public class PaymentInfo {
         this.containsGroceries = containsGroceries;
     }
 
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

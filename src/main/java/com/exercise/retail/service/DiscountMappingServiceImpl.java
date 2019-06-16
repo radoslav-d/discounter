@@ -14,7 +14,7 @@ import java.util.function.Function;
  *  - the DiscountType to a callback function, which calculates the percentage discount with complexity of 1
  */
 @Service
-public class DiscountMappingServiceImpl implements DiscountMappingService {
+class DiscountMappingServiceImpl implements DiscountMappingService {
 
     private static final Double EMPLOYEE_PERCENTAGE = 30.0 / 100;
     private static final Double AFFILIATE_PERCENTAGE = 10.0 / 100;

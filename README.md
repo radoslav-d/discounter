@@ -44,19 +44,19 @@ The returned response has the following structure:
 The `discount` property is the total amount of the discount, the `totalBill` is the initial bill and the type corresponds to the discount type applied.
 There are 4 options:
 
-    `EMPLOYEE_DISCOUNT` - discount for employees;
+    EMPLOYEE_DISCOUNT - discount for employees;
 
-    `AFFILIATE_DISCOUNT` - discount for affiliate user;
+    AFFILIATE_DISCOUNT - discount for affiliate user;
 
-    `LOYALTY_DISCOUNT` - discount for user that has been customer for more that 2 years;
+    LOYALTY_DISCOUNT - discount for user that has been customer for more that 2 years;
 
-    `NONE` - no discount is applied.
+    NONE - no discount is applied.
 
 To every payment an additional "voucher based" is applied, which corresponds to point 4. of the requirements.
 
 Example request and response:
     - Request:
-    ```
+```
     {
         "userInfo": {
             "type": "AFFILIATE",
@@ -66,23 +66,23 @@ Example request and response:
         "otherData": "request example",
         "containsGroceries": false
     }
-    ```
+```
     - Response:
-    ```
+```
     {
         "discount": 47.344,
         "totalBill": 323.44,
         "type": "AFFILIATE_DISCOUNT"
     }
-    ```
+```
 
 
 
-Run "mvn clean install" to recompile sources.
-Run "mvn test" to run tests and generate code coverage report (placed in: /target/site/jacoco/index.html, open in browser to view).
+Run `mvn clean install` to recompile sources.
+Run `mvn test` to run tests and generate code coverage report (placed in: `/target/site/jacoco/index.html`, open in browser to view).
 Run "DiscounterApplication" class to start the server.
 
-This project contains "class-diagram.jpg", which is an image, displaying the UML diagrams of the Java classes.
+This project contains `class-diagram.jpg`, which is an image, displaying the UML diagrams of the Java classes.
 
 Solution approach:
 

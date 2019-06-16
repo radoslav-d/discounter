@@ -7,8 +7,8 @@ package com.exercise.retail.model;
  */
 public class DiscountInfo {
 
-    private double discount;
-    private double totalBill;
+    private Double discount;
+    private Double totalBill;
     private DiscountType type;
 
     public DiscountType getType() {

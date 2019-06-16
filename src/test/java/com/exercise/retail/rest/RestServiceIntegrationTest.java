@@ -4,9 +4,7 @@ import com.exercise.retail.DiscountBase;
 import com.exercise.retail.DiscounterApplication;
 import com.exercise.retail.model.*;
 import com.exercise.retail.service.DiscountMappingService;
-import com.exercise.retail.service.DiscountMappingServiceImpl;
 import com.exercise.retail.service.DiscountService;
-import com.exercise.retail.service.DiscountServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -31,15 +29,13 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest(classes = {
         RestService.class,
         DiscountService.class,
-        DiscountServiceImpl.class,
         DiscountMappingService.class,
-        DiscountMappingServiceImpl.class,
         DiscounterApplication.class
 })
 @WebAppConfiguration
 public class RestServiceIntegrationTest extends DiscountBase {
 
-    private static final String PATH = "/discount";
+    private static final String PATH = "/api/discount";
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -112,6 +108,42 @@ public class RestServiceIntegrationTest extends DiscountBase {
         withUserType(UserType.REGULAR);
         makeRequest();
         assertCalculated(234.50, 10.0, DiscountType.NONE);
+    }
+
+    @Test
+    public void Should_Return_Bad_Request_Response_When_PaymentInfo_Is_Null() throws Exception {
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(PATH)
+                .contentType(MediaType.APPLICATION_JSON).content("")).andReturn();
+        assertEquals(mvcResult.getResponse().getStatus(), 400);
+    }
+
+    @Test
+    public void Should_Return_Bad_Request_Response_When_UserInfo_Is_Null() throws Exception {
+        paymentInfo.setUserInfo(null);
+        String inputJson = mapToJson(paymentInfo);
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(PATH)
+                .contentType(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
+        assertEquals(mvcResult.getResponse().getStatus(), 400);
+    }
+
+    @Test
+    public void Should_Return_Bad_Request_Response_When_Amount_Is_Negative() throws Exception {
+        withUserType(UserType.REGULAR);
+        withAmount(-1343.31);
+        String inputJson = mapToJson(paymentInfo);
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(PATH)
+                .contentType(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
+        assertEquals(mvcResult.getResponse().getStatus(), 400);
+    }
+
+    @Test
+    public void Should_Return_Bad_Request_Response_When_Amount_Is_Null() throws Exception {
+        withUserType(UserType.REGULAR);
+        withAmount(null);
+        String inputJson = mapToJson(paymentInfo);
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(PATH)
+                .contentType(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
+        assertEquals(mvcResult.getResponse().getStatus(), 400);
     }
 
     private void makeRequest() throws Exception {

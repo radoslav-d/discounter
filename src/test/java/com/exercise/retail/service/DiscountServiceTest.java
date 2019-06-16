@@ -1,7 +1,7 @@
 package com.exercise.retail.service;
 
 import com.exercise.retail.DiscountBase;
-import com.exercise.retail.DiscounterApplication;
+import com.exercise.retail.exception.IllegalPaymentInfoException;
 import com.exercise.retail.model.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,13 +14,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
         DiscountService.class,
         DiscountServiceImpl.class,
         DiscountMappingService.class,
-        DiscountMappingServiceImpl.class,
-        DiscounterApplication.class
+        DiscountMappingServiceImpl.class
 })
-public class DiscountServiceImplTest extends DiscountBase {
+public class DiscountServiceTest extends DiscountBase {
 
     @Autowired
-    private DiscountServiceImpl discountService;
+    private DiscountService discountService;
 
     @Test
     public void Should_Calculate_Discount_For_Employee_Without_Groceries() {
@@ -83,5 +82,29 @@ public class DiscountServiceImplTest extends DiscountBase {
         withUserType(UserType.LOYAL);
         discountInfo = discountService.calculateDiscount(paymentInfo);
         assertCalculated(150.45, 5.0, DiscountType.NONE);
+    }
+
+    @Test(expected = IllegalPaymentInfoException.class)
+    public void Should_Throw_Exception_When_PaymentInfo_Is_Null() {
+        paymentInfo = null;
+        discountService.calculateDiscount(paymentInfo);
+    }
+
+    @Test(expected = IllegalPaymentInfoException.class)
+    public void Should_Throw_Exception_When_UserInfo_Is_Null() {
+        paymentInfo.setUserInfo(null);
+        discountService.calculateDiscount(paymentInfo);
+    }
+
+    @Test(expected = IllegalPaymentInfoException.class)
+    public void Should_Throw_Exception_When_Amount_Is_Negative() {
+        paymentInfo.setAmount(-123.34);
+        discountService.calculateDiscount(paymentInfo);
+    }
+
+    @Test(expected = IllegalPaymentInfoException.class)
+    public void Should_Throw_Exception_When_Amount_Is_Null() {
+        paymentInfo.setAmount(null);
+        discountService.calculateDiscount(paymentInfo);
     }
 }

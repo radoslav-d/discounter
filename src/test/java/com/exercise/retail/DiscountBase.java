@@ -28,7 +28,7 @@ public class DiscountBase {
         return this;
     }
 
-    protected DiscountBase withAmount(double amount) {
+    protected DiscountBase withAmount(Double amount) {
         paymentInfo.setAmount(amount);
         return this;
     }
